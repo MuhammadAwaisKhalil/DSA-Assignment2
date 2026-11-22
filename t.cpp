@@ -142,6 +142,7 @@ void quickSort(vector<T> data, bool ascending = true)
     cout << "Time Complexity of Quick Sort -> Best: O(n log n), Average: O(n log n), Worst: O(n^2)" << endl;
 }
 
+<<<<<<< HEAD
 template <typename T>
 void merge(vector<T>& o, vector<T>& left, vector<T>& right, bool ascending)
 {
@@ -208,10 +209,24 @@ void countingSortByDigit(vector<unsigned long long>& arr, unsigned long long exp
     vector<int> count(10, 0);
 
     for (unsigned long long num : arr) {
+=======
+
+
+
+
+template <typename T>
+void countingSortByDigit(vector<T>& arr, T exp) {
+    int n = static_cast<int>(arr.size());
+    vector<T> output(n, 0);
+    vector<int> count(10, 0);
+
+    for (T num : arr) {
+>>>>>>> 51287d786b1ad360f2f7fa83970f759eaafbe3d8
         int digit = static_cast<int>((num / exp) % 10);
         count[digit]++;
     }
 
+<<<<<<< HEAD
     if (ascending) {
         for (int i = 1; i < 10; i++) {
             count[i] += count[i - 1];
@@ -221,6 +236,10 @@ void countingSortByDigit(vector<unsigned long long>& arr, unsigned long long exp
         for (int i = 8; i >= 0; i--) {
             count[i] += count[i + 1];
         }
+=======
+    for (int i = 1; i < 10; i++) {
+        count[i] += count[i - 1];
+>>>>>>> 51287d786b1ad360f2f7fa83970f759eaafbe3d8
     }
 
     for (int i = n - 1; i >= 0; i--) {
@@ -234,11 +253,17 @@ void countingSortByDigit(vector<unsigned long long>& arr, unsigned long long exp
     }
 }
 
+<<<<<<< HEAD
 void radixSortUnsigned(vector<unsigned long long>& arr, bool ascending) {
+=======
+template <typename T>
+void radixSort(vector<T>& arr) {
+>>>>>>> 51287d786b1ad360f2f7fa83970f759eaafbe3d8
     if (arr.size() <= 1) {
         return;
     }
 
+<<<<<<< HEAD
     unsigned long long maxVal = arr[0];
     for (size_t i = 1; i < arr.size(); i++) {
         if (arr[i] > maxVal) maxVal = arr[i];
@@ -246,6 +271,12 @@ void radixSortUnsigned(vector<unsigned long long>& arr, bool ascending) {
 
     for (unsigned long long exp = 1; maxVal / exp > 0; ) {
         countingSortByDigit(arr, exp, ascending);
+=======
+    T maxVal = *max_element(arr.begin(), arr.end());
+
+    for (T exp = 1; maxVal / exp > 0; ) {
+        countingSortByDigit(arr, exp);
+>>>>>>> 51287d786b1ad360f2f7fa83970f759eaafbe3d8
         if (exp > maxVal / 10) {
             break;
         }
@@ -253,6 +284,7 @@ void radixSortUnsigned(vector<unsigned long long>& arr, bool ascending) {
     }
 }
 
+<<<<<<< HEAD
 void radixSort(vector<long> arr, bool ascending = true) {
     cout << "\n--- Radix Sort ---" << endl;
     cout << "Initial Array: ";
@@ -578,3 +610,175 @@ int main()
     }
     return 0;
 }
+=======
+
+
+template <typename T>
+void showArray(vector<T>& data)
+{
+    for(int i = 0; i < data.size(); i++)
+    {
+        cout<<data[i]<<" ";
+    }
+    cout<<endl;
+}
+
+template <typename T>
+void selectionSort(vector<T> data, bool ascending=true)
+{
+    int n = data.size();
+
+    cout<<"Initial Array: ";
+    showArray(data);
+    
+    if(n<=1)
+    {
+        cout<<"Single element array already sorted\nTime Complexity: O(1)";
+        return;
+    }
+    
+
+    for(int i = 0; i < n; i++)
+    {
+        int currentSmall = i;
+
+        for(int j = i + 1; j < n; j++)
+        {
+            if(ascending)
+            {
+                if(data[currentSmall] > data[j])
+                {
+                    currentSmall = j;
+                }
+            }
+            else
+            {
+                if(data[currentSmall] < data[j])
+                {
+                    currentSmall = j;
+                }
+            }
+        }
+
+        if(currentSmall!=i)
+        {
+            T temp = data[currentSmall];
+            data[currentSmall] = data[i];
+            data[i] = temp;
+        }
+    }
+
+    cout<<"Sorted Array: ";
+    showArray(data);
+    cout<<endl;
+    cout<<"Time Complexity of Selection Sort:  O(n^2)"<<endl;
+
+    
+}
+template <typename T>
+int partition(vector<T>& data, int low, int high, bool ascending)
+{
+    T pivot = data[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        bool shouldSwap = ascending ? (data[j] <= pivot) : (data[j] >= pivot);
+        if (shouldSwap)
+        {
+            i++;
+            T temp = data[i];
+            data[i] = data[j];
+            data[j] = temp;
+        }
+    }
+
+    T temp = data[i + 1];
+    data[i + 1] = data[high];
+    data[high] = temp;
+
+    return i + 1;
+}
+
+template <typename T>
+void quickSortHelper(vector<T>& data, int low, int high, bool ascending)
+{
+    if (low < high)
+    {
+        int pivotIndex = partition(data, low, high, ascending);
+        quickSortHelper(data, low, pivotIndex - 1, ascending);
+        quickSortHelper(data, pivotIndex + 1, high, ascending);
+    }
+}
+
+template <typename T>
+void quickSort(vector<T> data, bool ascending = true)
+{
+    int n = data.size();
+
+    cout << "Initial Array: ";
+    showArray(data);
+
+    if (n == 0)
+    {
+        cout << "Empty array (nothing to sort)" << endl;
+        cout << "Time Complexity of Quick Sort -> Best: O(n log n), Average: O(n log n), Worst: O(n^2)" << endl;
+        return;
+    }
+
+    if (n == 1)
+    {
+        cout << "Single element array already sorted" << endl;
+        cout << "Time Complexity of Quick Sort -> Best: O(n log n), Average: O(n log n), Worst: O(n^2)" << endl;
+        return;
+    }
+
+    quickSortHelper(data, 0, n - 1, ascending);
+
+    cout << "Sorted Array: ";
+    showArray(data);
+    cout << "Time Complexity of Quick Sort -> Best: O(n log n), Average: O(n log n), Worst: O(n^2)" << endl;
+}
+
+template <typename T>
+void merge(vector<T>& o, vector<T>& left, vector<T>& right)
+{
+    int xl = 0;
+    int xr = 0;
+    for (int oIndex = 0; oIndex < o.size(); oIndex++)
+    {
+        if (xl >= left.size())
+            o[oIndex] = right[xr++];
+        else if (xr >= right.size())
+            o[oIndex] = left[xl++];
+        else if (left[xl] < right[xr])
+            o[oIndex] = left[xl++];
+        else if (left[xl] > right[xr])
+            o[oIndex] = right[xr++];
+
+    }
+}
+
+template <typename T>
+void mergeSort(vector<T>& p, T size)
+{
+    if (size <= 1)
+    {
+        return;
+    }
+    else
+    {
+        int mid = size / 2;
+        vector<T> left(p.begin(), p.begin() + mid);
+        vector<T> right(p.begin() + mid, p.end());
+        mergeSort(left, mid);
+        mergeSort(right, size - mid);
+        merge(p, left, right);
+    }
+
+
+
+}
+
+
+>>>>>>> 51287d786b1ad360f2f7fa83970f759eaafbe3d8
