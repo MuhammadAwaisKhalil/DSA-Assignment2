@@ -131,3 +131,44 @@ void quickSort(vector<T> data, bool ascending = true)
     showArray(data);
     cout << "Time Complexity of Quick Sort -> Best: O(n log n), Average: O(n log n), Worst: O(n^2)" << endl;
 }
+
+template <typename T>
+void merge(vector<T>& o, vector<T>& left, vector<T>& right)
+{
+    int xl = 0;
+    int xr = 0;
+    for (int oIndex = 0; oIndex < o.size(); oIndex++)
+    {
+        if (xl >= left.size())
+            o[oIndex] = right[xr++];
+        else if (xr >= right.size())
+            o[oIndex] = left[xl++];
+        else if (left[xl] < right[xr])
+            o[oIndex] = left[xl++];
+        else if (left[xl] > right[xr])
+            o[oIndex] = right[xr++];
+
+    }
+}
+
+template <typename T>
+void mergeSort(vector<T>& p, T size)
+{
+    if (size <= 1)
+    {
+        return;
+    }
+    else
+    {
+        int mid = size / 2;
+        vector<T> left(p.begin(), p.begin() + mid);
+        vector<T> right(p.begin() + mid, p.end());
+        mergeSort(left, mid);
+        mergeSort(right, size - mid);
+        merge(p, left, right);
+    }
+
+
+
+}
+
