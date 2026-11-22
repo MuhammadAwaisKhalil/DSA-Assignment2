@@ -131,3 +131,52 @@ void quickSort(vector<T> data, bool ascending = true)
     showArray(data);
     cout << "Time Complexity of Quick Sort -> Best: O(n log n), Average: O(n log n), Worst: O(n^2)" << endl;
 }
+
+
+
+
+
+template <typename T>
+void countingSortByDigit(vector<T>& arr, T exp) {
+    int n = static_cast<int>(arr.size());
+    vector<T> output(n, 0);
+    vector<int> count(10, 0);
+
+    for (T num : arr) {
+        int digit = static_cast<int>((num / exp) % 10);
+        count[digit]++;
+    }
+
+    for (int i = 1; i < 10; i++) {
+        count[i] += count[i - 1];
+    }
+
+    for (int i = n - 1; i >= 0; i--) {
+        int digit = static_cast<int>((arr[i] / exp) % 10);
+        output[count[digit] - 1] = arr[i];
+        count[digit]--;
+    }
+
+    for (int i = 0; i < n; i++) {
+        arr[i] = output[i];
+    }
+}
+
+template <typename T>
+void radixSort(vector<T>& arr) {
+    if (arr.size() <= 1) {
+        return;
+    }
+
+    T maxVal = *max_element(arr.begin(), arr.end());
+
+    for (T exp = 1; maxVal / exp > 0; ) {
+        countingSortByDigit(arr, exp);
+        if (exp > maxVal / 10) {
+            break;
+        }
+        exp *= 10;
+    }
+}
+
+
