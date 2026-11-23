@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// This function simply prints the numbers or strings stored in a vector.
 template <typename T>
 void showArray(const vector<T>& data)
 {
@@ -26,6 +27,7 @@ void showArray(const vector<T>& data)
 template <typename T>
 void selectionSort(vector<T> data, bool ascending = true)
 {
+    // Selection sort finds the smallest or largest value for each position.
     int n = static_cast<int>(data.size());
 
     cout << "\n--- Selection Sort ---" << endl;
@@ -42,6 +44,7 @@ void selectionSort(vector<T> data, bool ascending = true)
 
     for (int i = 0; i < n; i++)
     {
+        // At first, assume the current position contains the required value.
         int currentSmall = i;
 
         for (int j = i + 1; j < n; j++)
@@ -78,6 +81,7 @@ void selectionSort(vector<T> data, bool ascending = true)
 template <typename T>
 int partition(vector<T>& data, int low, int high, bool ascending)
 {
+    // The last element is used as the pivot in this quick sort implementation.
     T pivot = data[high];
     int i = low - 1;
 
@@ -105,6 +109,7 @@ void quickSortHelper(vector<T>& data, int low, int high, bool ascending)
 {
     if (low < high)
     {
+        // Divide the array around the pivot, then sort both smaller parts.
         int pivotIndex = partition(data, low, high, ascending);
         quickSortHelper(data, low, pivotIndex - 1, ascending);
         quickSortHelper(data, pivotIndex + 1, high, ascending);
@@ -145,6 +150,7 @@ void quickSort(vector<T> data, bool ascending = true)
 template <typename T>
 void merge(vector<T>& o, vector<T>& left, vector<T>& right, bool ascending)
 {
+    // Compare the front values of both halves and copy the smaller/larger one.
     size_t xl = 0;
     size_t xr = 0;
     for (size_t oIndex = 0; oIndex < o.size(); oIndex++)
@@ -169,6 +175,7 @@ void mergeSortHelper(vector<T>& p, int size, bool ascending)
     }
     else
     {
+        // Split the array into two halves and sort each half separately.
         int mid = size / 2;
         vector<T> left(p.begin(), p.begin() + mid);
         vector<T> right(p.begin() + mid, p.end());
@@ -207,6 +214,7 @@ void countingSortByDigit(vector<unsigned long long>& arr, unsigned long long exp
     vector<unsigned long long> output(n, 0);
     vector<int> count(10, 0);
 
+    // Find the digit at the current place value, such as ones or tens.
     for (unsigned long long num : arr) {
         int digit = static_cast<int>((num / exp) % 10);
         count[digit]++;
@@ -225,6 +233,7 @@ void countingSortByDigit(vector<unsigned long long>& arr, unsigned long long exp
 
     for (int i = n - 1; i >= 0; i--) {
         int digit = static_cast<int>((arr[i] / exp) % 10);
+        // Place the element in the temporary array while keeping order stable.
         output[count[digit] - 1] = arr[i];
         count[digit]--;
     }
@@ -245,6 +254,7 @@ void radixSortUnsigned(vector<unsigned long long>& arr, bool ascending) {
     }
 
     for (unsigned long long exp = 1; maxVal / exp > 0; ) {
+        // Sort once for each place value, from the rightmost digit to the left.
         countingSortByDigit(arr, exp, ascending);
         if (exp > maxVal / 10) {
             break;
@@ -268,6 +278,7 @@ void radixSort(vector<long> arr, bool ascending = true) {
     vector<unsigned long long> negatives;
     vector<unsigned long long> nonNegatives;
 
+    // Radix sort works easily with positive values, so negatives are handled separately.
     for (long val : arr) {
         if (val < 0) {
             unsigned long long absVal = static_cast<unsigned long long>(-(val + 1)) + 1ULL;
@@ -320,6 +331,7 @@ void radixSort(vector<float> arr, bool ascending = true) {
     for (size_t i = 0; i < arr.size(); i++) {
         uint32_t bits = 0;
         if (arr[i] == 0.0f) arr[i] = 0.0f;
+        // Copy the float's bit pattern so negative and positive values can be ordered.
         memcpy(&bits, &arr[i], sizeof(uint32_t));
         if (bits & 0x80000000U) {
             bits = ~bits;
@@ -332,6 +344,7 @@ void radixSort(vector<float> arr, bool ascending = true) {
 
     radixSortUnsigned(mapped, ascending);
 
+    // Convert the sorted bit patterns back into normal float values.
     for (size_t i = 0; i < arr.size(); i++) {
         uint32_t bits = static_cast<uint32_t>(mapped[i]);
         if (bits & 0x80000000U) {
@@ -353,6 +366,7 @@ void countingSortByChar(vector<string>& arr, int pos, bool ascending) {
     vector<string> output(n);
     vector<int> count(257, 0);
 
+    // Use character + 1 so that a missing character can be represented by 0.
     for (int i = 0; i < n; i++) {
         int charCode = (pos < static_cast<int>(arr[i].size())) ? (static_cast<unsigned char>(arr[i][pos]) + 1) : 0;
         count[charCode]++;
@@ -396,6 +410,7 @@ void radixSort(vector<string> arr, bool ascending = true) {
             maxLen = static_cast<int>(s.size());
         }
     }
+    // Strings are sorted from their last character backwards to the first character.
     for (int pos = maxLen - 1; pos >= 0; pos--) {
         countingSortByChar(arr, pos, ascending);
     }
@@ -406,6 +421,7 @@ void radixSort(vector<string> arr, bool ascending = true) {
 template <typename T>
 bool parseToken(const string& token, T& outVal)
 {
+    // Try to convert one word into the required data type.
     stringstream ss(token);
     ss >> outVal;
     return !ss.fail() && ss.eof();
@@ -413,6 +429,7 @@ bool parseToken(const string& token, T& outVal)
 template <typename T>
 bool parseToken(const string& token, string& outVal)
 {
+    // Strings do not need conversion, but empty entries are rejected.
     outVal = token;
     return !token.empty();
 }
@@ -426,6 +443,7 @@ vector<T> getInputData(const string& typeName)
         string line;
         if (!getline(cin, line)) break;
         if (line.empty()) break;
+        // A line is divided into separate words for processing.
         stringstream ss(line);
         string token;
         bool limitReached = false;
@@ -456,6 +474,7 @@ vector<T> getInputData(const string& typeName)
 template <typename T>
 void runSelectedAlgorithms(const vector<T>& originalData, const vector<int>& algos, bool ascending)
 {
+    // Run every algorithm chosen by the user on the original data.
     for (int algo : algos)
     {
         if (algo == 1)
@@ -470,6 +489,7 @@ void runSelectedAlgorithms(const vector<T>& originalData, const vector<int>& alg
 }
 int getValidIntChoice(int minVal, int maxVal)
 {
+    // Keep asking until the user enters a number within the allowed range.
     while (true)
     {
         string line;
@@ -537,6 +557,7 @@ vector<int> getAlgorithmChoices()
 }
 int main()
 {
+    // The menu stays open until the user chooses option 4 to exit.
     while (true)
     {
         cout << endl << endl;
